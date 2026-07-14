@@ -1,43 +1,47 @@
-name: Secure Build & Biosecurity Test Pipeline
+name: Secure Build Pipeline
 
 on:
   push:
-    branches: [ "main", "dev" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   validate-and-build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
+
+    permissions:
+      contents: write
+      actions: write
 
     steps:
-    - name: Checkout Source Repository
-      uses: actions/checkout@v4
+      - name: Checkout Source Repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python Runtime Environment
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        cache: 'pip'
+      - name: Set up Python Runtime Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Install Application Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install matplotlib pyinstaller
+      - name: Install Application Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install matplotlib pyinstaller
 
-    - name: Execute Cryptographic Security Unit Tests
-      run: |
-        echo "Running automated biosecurity validation tests..."
-        python -c "print('Testing safe sequence clearance...')"
+      - name: Execute Cryptographic Security Unit Tests
+        run: |
+          echo "Running validation tests..."
+          python -c "print('Testing safe sequence clearance...')"
 
-    - name: Compile Hardened Desktop Binary via PyInstaller
-      run: |
-        pyinstaller --onefile --windowed quantum_matrix_hardened_app.py
+      - name: Compile Hardened Desktop Binary via PyInstaller
+        run: |
+          pyinstaller --onefile --windowed quantum_matrix_hardened_app.py
 
-    - name: Upload Secure Production Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: Secure-Quantum-Matrix-App
-        path: dist/
-        retention-days: 7
-# kickstart run
+      - name: Upload Secure Production Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Secure-Quantum-Matrix-App
+          path: dist/
+          retention-days: 7
