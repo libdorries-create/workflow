@@ -7,6 +7,8 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch: # <--- ADDED THIS LINE FOR MANUAL OVERRIDE
+
 
 jobs:
   validate-and-build:
