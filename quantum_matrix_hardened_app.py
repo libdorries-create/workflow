@@ -40,3 +40,4 @@ jobs:
         name: Secure-Quantum-Matrix-App
         path: dist/
         retention-days: 7
+# kickstart run
